@@ -1,7 +1,7 @@
 import json
 
 
-def create_html(mcqs, output_file="quiz.html"):
+def create_html(mcqs, output_file="templates/quiz.html"):
     """
     Generates an interactive HTML quiz file from a list of MCQ dictionaries.
 
