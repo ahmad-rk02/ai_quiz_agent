@@ -1,4 +1,13 @@
-from flask import Flask, request, render_template, send_file, flash, redirect, url_for
+from flask import (
+    Flask,
+    request,
+    render_template,
+    send_file,
+    flash,
+    redirect,
+    url_for,
+    render_template_string,
+)
 import os
 from extract_text import extract_text
 from generate_mcqs import generate_mcqs
@@ -8,7 +17,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
 app = Flask(__name__)
-app.secret_key = "supersecretkey"  # needed for flashing messages
+app.secret_key = "supersecretkey"
 
 UPLOAD_FOLDER = "uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
@@ -16,8 +25,8 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 ADMIN_EMAIL = "razakhanahmad68@gmail.com"
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
-SMTP_USER = "razakhanahmad68@gmail.com"  # replace with your Gmail for sending
-SMTP_PASSWORD = "ppgd iblk ezxu pfzo"  # replace with your app password
+SMTP_USER = "razakhanahmad68@gmail.com"
+SMTP_PASSWORD = "ppgd iblk ezxu pfzo"
 
 
 # -------------------- ROUTES --------------------
@@ -43,14 +52,12 @@ def contact():
             return redirect(url_for("contact"))
 
         try:
-            # Create Email
             msg = MIMEMultipart()
             msg["From"] = email
             msg["To"] = ADMIN_EMAIL
             msg["Subject"] = f"Quiz Agent contact form Message from {name}"
             msg.attach(MIMEText(message, "plain"))
 
-            # Send Email
             server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
             server.starttls()
             server.login(SMTP_USER, SMTP_PASSWORD)
@@ -99,13 +106,13 @@ def generate():
     # Generate MCQs
     mcqs = generate_mcqs(text, num)
 
-    # Create HTML
-    create_html(
-        mcqs, output_file="templates/quiz.html"
-    )  # place in templates for easier rendering
+    # Get HTML (no file saving)
+    quiz_html = create_html(mcqs)
 
-    return render_template("quiz.html")  # render the quiz page in browser
+    # Return dynamic HTML safely
+    return render_template_string(quiz_html)
 
 
+# -------------------- RUN APP --------------------
 if __name__ == "__main__":
     app.run(debug=True)
