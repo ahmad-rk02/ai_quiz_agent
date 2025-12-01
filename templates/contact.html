@@ -3,19 +3,21 @@
 
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Contact • AI Quiz Agent</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-
   <style>
     body {
       font-family: "Poppins", sans-serif;
       background: radial-gradient(circle at top, #0f172a, #020617);
       min-height: 100vh;
       color: white;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
     }
 
-    /* Glow animation */
     .glow-box {
       box-shadow: 0 0 50px rgba(99, 102, 241, 0.4);
       animation: pulseGlow 3s infinite ease-in-out;
@@ -35,7 +37,6 @@
       }
     }
 
-    /* Floating form */
     .float {
       animation: floatAnim 4s ease-in-out infinite;
     }
@@ -52,7 +53,6 @@
       }
     }
 
-    /* Popup animation */
     @keyframes popup {
       from {
         transform: scale(0.8);
@@ -73,76 +73,63 @@
 
 <body>
 
-  <!-- Flash Modal Popup -->
   {% with messages = get_flashed_messages(with_categories=true) %}
   {% if messages %}
   <div id="flashModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex justify-center items-center z-50">
-
     <div
       class="bg-white/10 border border-white/20 rounded-2xl p-8 max-w-md w-full text-center shadow-2xl animate-popup">
       {% for category, message in messages %}
-      <h2 class="text-2xl font-semibold 
-              {% if category=='success' %} text-green-400 {% else %} text-red-400 {% endif %}">
+      <h2
+        class="text-2xl font-semibold {% if category=='success' %} text-green-400 {% else %} text-red-400 {% endif %}">
         {% if category=='success' %}✔ Success{% else %}✖ Error{% endif %}
       </h2>
-
       <p class="mt-3 text-gray-200">{{ message }}</p>
       {% endfor %}
-
-      <button onclick="closeModal()"
-        class="mt-6 px-6 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 transition-all text-white">
-        OK
-      </button>
+      <button onclick="document.getElementById('flashModal').style.display='none'"
+        class="mt-6 px-6 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 transition-all text-white">OK</button>
     </div>
-
   </div>
-
-  <script>
-    function closeModal() {
-      document.getElementById("flashModal").style.display = "none";
-    }
-  </script>
   {% endif %}
   {% endwith %}
 
-  <!-- Navbar -->
   <nav
-    class="w-full bg-transparent backdrop-blur-lg py-5 px-10 flex justify-between items-center border-b border-white/10">
-    <h1 class="text-2xl font-bold tracking-wide text-indigo-400">AI Quiz Agent</h1>
-
-    <div>
-      <a href="/" class="text-gray-300 hover:text-indigo-400 px-4">Home</a>
-      <a href="/about" class="text-gray-300 hover:text-indigo-400 px-4">About</a>
-      <a href="/contact" class="text-gray-300 hover:text-indigo-400 px-4">Contact</a>
+    class="w-full bg-transparent backdrop-blur-lg py-4 px-4 sm:px-10 flex justify-between items-center border-b border-white/10">
+    <h1 class="text-lg sm:text-2xl font-bold tracking-wide text-indigo-400">AI Quiz Agent</h1>
+    <button class="sm:hidden text-gray-300 focus:outline-none"
+      onclick="document.getElementById('mobileMenu').classList.toggle('hidden')">☰</button>
+    <div class="hidden sm:flex space-x-4">
+      <a href="/" class="text-gray-300 hover:text-indigo-400">Home</a>
+      <a href="/about" class="text-gray-300 hover:text-indigo-400">About</a>
+      <a href="/contact" class="text-gray-300 hover:text-indigo-400">Contact</a>
     </div>
   </nav>
 
-  <!-- Contact Form Section -->
-<section class="flex-grow flex justify-center items-center min-h-[80vh] px-4">
+  <div id="mobileMenu"
+    class="sm:hidden hidden bg-black/40 backdrop-blur-lg border-b border-white/10 px-4 py-3 space-y-2">
+    <a href="/" class="block text-gray-300 hover:text-indigo-400">Home</a>
+    <a href="/about" class="block text-gray-300 hover:text-indigo-400">About</a>
+    <a href="/contact" class="block text-gray-300 hover:text-indigo-400">Contact</a>
+  </div>
 
-    <div class="bg-white/10 backdrop-blur-md rounded-2xl p-10 max-w-lg w-full shadow-lg shadow-indigo-500/50 float">
+  <section class="flex justify-center items-center py-12 px-4 sm:px-6 md:px-10 min-h-screen">
+    <div
+      class="bg-white/10 backdrop-blur-md rounded-2xl p-6 sm:p-8 md:p-10 max-w-lg w-full shadow-lg shadow-indigo-500/50 float">
       <h2 class="text-3xl font-bold mb-6 text-indigo-300 text-center">Get in Touch</h2>
-
       <form action="/contact" method="post" class="space-y-4">
         <input type="text" name="name" placeholder="Your Name" required
           class="w-full p-3 rounded-xl border border-gray-600 bg-black/20 text-white focus:outline-none focus:ring-2 focus:ring-indigo-400">
-
         <input type="email" name="email" placeholder="Your Email" required
           class="w-full p-3 rounded-xl border border-gray-600 bg-black/20 text-white focus:outline-none focus:ring-2 focus:ring-indigo-400">
-
         <textarea name="message" rows="5" placeholder="Your Message" required
           class="w-full p-3 rounded-xl border border-gray-600 bg-black/20 text-white focus:outline-none focus:ring-2 focus:ring-indigo-400"></textarea>
-
         <button type="submit"
-          class="w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-lg font-semibold shadow-lg hover:shadow-indigo-600/50 transition-all">
-          Send Message
-        </button>
+          class="w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-lg font-semibold shadow-lg hover:shadow-indigo-600/50 transition-all">Send
+          Message</button>
       </form>
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer class="mt-20 text-center text-gray-400 py-6 border-t border-white/10">
+  <footer class="mt-10 text-center text-gray-400 py-6 border-t border-white/10 text-sm sm:text-base">
     <p>© 2025 AI Quiz Agent • Powered by Ahmad Raza Khan</p>
   </footer>
 
