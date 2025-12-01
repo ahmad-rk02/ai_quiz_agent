@@ -18,15 +18,12 @@ def create_html(mcqs):
     <title>AI Quiz</title>
     <style>
         body {{
-            font-family: 'Segoe UI', sans-serif;
-            padding: 20px;
-            background: linear-gradient(135deg, #e3ecff, #f5f7fa);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            flex-direction: column;
-            animation: fadeIn 1s ease-in-out;
+    font-family: 'Segoe UI', sans-serif;
+    padding: 20px;
+    background: linear-gradient(135deg, #e3ecff, #f5f7fa);
+    min-height: 100dvh;    /* FIX */
+    display: block;        /* FIX */
+    animation: fadeIn 1s ease-in-out;
         }}
         
         @keyframes fadeIn {{
